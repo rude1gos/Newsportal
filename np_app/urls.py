@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import PostList, PostDetail, PostCreate, PostEdit, PostDelete, PostSearch, subscribe, CategoryListView
 #AppointmentView , unsubscribe
+from django.views.decorators.cache import cache_page
 
 urlpatterns = [
     path('', PostList.as_view(), name='post_list'),
@@ -20,3 +21,4 @@ urlpatterns = [
     path('categories/<int:pk>/subscribe', subscribe, name='subscribe'),
 
 ]
+#path('<int:pk>/edit/', cache_page(60)(PostEdit.as_view()), name='post_edit'), кеш страницы

@@ -1,4 +1,4 @@
-from NewsPortal.np_app.tasks import send_notifications
+from .tasks import send_notifications
 from .models import PostCategory
 from django.db.models.signals import m2m_changed
 from django.dispatch import receiver

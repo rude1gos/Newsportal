@@ -5,6 +5,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 
 
 from .models import Post, User, Category
@@ -29,6 +31,13 @@ class PostList(ListView):
         context['time_now'] = datetime.utcnow()
         context['filterset'] = self.filterset
         return context
+
+    def get_object(self, *args, **kwargs):
+        obj = cache.get(f'post_list-{self.kwargs["pk"]}', None)
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'post_list-{self.kwargs["pk"]}', obj)
+        return obj
 
 
 class PostSearch(ListView):
@@ -67,6 +76,13 @@ class PostDetail(DetailView):
                 is_subscribersuser = False
         context['is_subscribersuser'] = is_subscribersuser
         return context
+
+    def get_object(self, *args, **kwargs):
+        obj = cache.get(f'post_detail-{self.kwargs["pk"]}', None)
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'post_detail-{self.kwargs["pk"]}', obj)
+        return obj
 
 
 class PostCreate(CreateView, PermissionRequiredMixin, LoginRequiredMixin):
@@ -145,3 +161,5 @@ def subscribe(request, pk):
 #        if user in cat.subscribers.all():
 #            cat.subscribers.remove(user)
 #    return redirect('/news/')
+
+#@cache_page(60) кеш отдельного представления

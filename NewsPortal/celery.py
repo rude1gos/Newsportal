@@ -11,7 +11,7 @@ app.autodiscover_tasks()
 
 app.conf.beat_schedule = {
     'print_every_monday_at_8:00': {
-        'task': 'news.tasks.weekly_newsletter',
+        'task': 'np_app.tasks.weekly_newsletter',
         'schedule': crontab(minute=0, hour=8, day_of_week='monday'),
     },
 }

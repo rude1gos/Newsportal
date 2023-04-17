@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from NewsPortal.np_app.models import Post, Category
+from .models import Post, Category
 from django.conf import settings
 from celery import shared_task
 import time
