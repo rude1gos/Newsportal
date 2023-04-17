@@ -23,7 +23,8 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-
+                    {% load cache %}
+                        {% cache 300 header %}
                         <li class="nav-item">
                             <a class="nav-link" href="/news/">Новости/Статьи</a>
                         </li>
@@ -36,7 +37,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/news/search/">Поиск новости/статьи</a>
                         </li>
-
+                    {% endcache %}
                     </ul>
                 </div>
             </div>
